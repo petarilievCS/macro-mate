@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E6AE11622EB845E700B7E210 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E6AE11612EB845E700B7E210 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		E6AE11612EB845E700B7E210 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6C21D1C2E8CEAF600E561F9 /* MacroMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacroMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -32,6 +37,7 @@
 		E6C21D132E8CEAF600E561F9 = {
 			isa = PBXGroup;
 			children = (
+				E6AE11612EB845E700B7E210 /* .gitignore */,
 				E6C21D1E2E8CEAF600E561F9 /* MacroMate */,
 				E6C21D1D2E8CEAF600E561F9 /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6AE11622EB845E700B7E210 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
