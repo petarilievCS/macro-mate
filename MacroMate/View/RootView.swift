@@ -29,7 +29,7 @@ struct RootView: View {
             // Chat
             Tab("Chat", systemImage: "apple.intelligence") {
                 NavigationStack {
-                    ChatView()
+                    ChatView(llmService: llmService)
                 }
             }
             
