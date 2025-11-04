@@ -8,7 +8,7 @@
 import Foundation
 
 protocol LLMServiceProviding {
-    func estimateNutrition(for mealDescription: String) async throws -> FoodDTO
+    func estimateNutrition(for messages: [ChatMessage]) async throws -> FoodDTO
 }
 
 struct LLMService: LLMServiceProviding {
@@ -16,9 +16,9 @@ struct LLMService: LLMServiceProviding {
 
     let model: String = "gpt-4.1-mini"
     
-    func estimateNutrition(for mealDescription: String) async throws -> FoodDTO {
-        let request = try generateRequest(with: mealDescription)
-        var (data, response) = try await URLSession.shared.data(for: request) // TODO: Inject URLSession
+    func estimateNutrition(for messages: [ChatMessage]) async throws -> FoodDTO {
+        let request = try generateRequest(with: messages)
+        var (data, response) = try await URLSession.shared.data(for: request)
         
         guard let http1 = response as? HTTPURLResponse else {
             throw LLMServiceError.invalidResponse
@@ -39,17 +39,18 @@ struct LLMService: LLMServiceProviding {
         let food = try decode(data)
         return food
     }
-    
+
     // Helpers
-    private func generateRequest(with mealDescription: String) throws -> URLRequest {
+    private func generateRequest(with messages: [ChatMessage]) throws -> URLRequest {
         let url = URL(string: endpoint)!
         var request = URLRequest(url: url)
         
-        // Setup payload
-        let input: [Message] = [
-            Message(role: "system", content: K.systemPrompt),
-            Message(role: "user", content: "Description: \(mealDescription)")
-        ]
+        var input: [LLMMessage] = []
+        input.append(LLMMessage(role: "system", content: K.singleEstimationSystemPrompt))
+        for message in messages {
+            input.append(LLMMessage(role: message.role == .user ? "user" : "assistant", content: message.text))
+        }
+        
         let payload = Payload(model: model, input: input, temperature: 0.2)
         let body = try JSONEncoder().encode(payload)
         let key = try getKey()
@@ -97,10 +98,11 @@ struct LLMService: LLMServiceProviding {
 
 // Simple mock implementation for previews/tests
 struct MockLLMService: LLMServiceProviding {
-    func estimateNutrition(for mealDescription: String) async throws -> FoodDTO {
+    func estimateNutrition(for messages: [ChatMessage]) async throws -> FoodDTO {
         try await Task.sleep(nanoseconds: 300_000_000) // 0.3s delay
+        let name = messages.first?.text ?? ""
         return FoodDTO(
-            name: mealDescription.isEmpty ? "Mock Meal" : mealDescription,
+            name: name,
             calories: 500,
             protein: 30,
             carbs: 50,

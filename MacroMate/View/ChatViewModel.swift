@@ -23,7 +23,7 @@ extension ChatView {
         }
         
         func sendButtonPressed() {
-            
+            // TODO: Send request to LLM
         }
         
         func saveButtonPressed() {

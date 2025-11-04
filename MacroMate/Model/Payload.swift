@@ -7,11 +7,11 @@
 
 struct Payload: Encodable {
     let model: String
-    let input: [Message]
+    let input: [LLMMessage]
     let temperature: Double
 }
 
-struct Message: Encodable {
+struct LLMMessage: Encodable {
     let role: String
     let content: String
 }
