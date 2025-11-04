@@ -18,10 +18,14 @@ struct ChatView: View {
         VStack {
             Spacer()
             
-            ForEach(viewModel.messages) { message in
-                Text(message.text)
+            VStack(spacing: 15) {
+                ForEach(viewModel.messages) { message in
+                    MessageBubble(message: message)
+                }
+                
             }
-            
+            .padding()
+
             HStack {
                 TextField("Text field", text: $viewModel.currentText)
                 Button {
@@ -30,9 +34,10 @@ struct ChatView: View {
                     Image(systemName: "paperplane")
                 }
             }
+            .padding()
            
         }
-        .padding()
+
         .navigationTitle("Chat")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
